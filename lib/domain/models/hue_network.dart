@@ -399,16 +399,13 @@ class HueNetwork {
   /// bridges will be checked. If any of the bridges in the list are not already
   /// associated with this [HueNetwork], they will be ignored.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the remote access token.
   ///
   /// If this method fails to fetch a resource with an error, the resource will
   /// be added to the [failedFetches] list.
   Future<void> fetchAll({
     List<Bridge>? bridges,
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     final List<Bridge> bridgesToCheck;
     if (bridges == null) {
@@ -440,7 +437,7 @@ class HueNetwork {
           bridgeIpAddr: bridge.ipAddress!,
           applicationKey: bridge.applicationKey!,
           resourceType: null,
-          decrypter: decrypter,
+          token: token,
         );
       } catch (e) {
         _addFailedFetch(
@@ -485,25 +482,22 @@ class HueNetwork {
 
       if (bridgesWithResourceType.isEmpty) continue;
 
-      await fetchAllType(type, decrypter: decrypter);
+      await fetchAllType(type, bridges: bridgesWithResourceType, token: token);
     }
   }
 
   /// Fetch all of the Philip's Hue devices on the network that this device has
   /// permission to fetch which failed to be fetched in the last fetch.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the remote access token.
   ///
   /// If this method fails to fetch a resource with an error, the resource will
   /// be added back to the [failedFetches] list.
   Future<void> fetchAllFailed({
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     for (final ResourceType type in ResourceType.values) {
-      fetchAllFailedType(type, decrypter: decrypter);
+      fetchAllFailedType(type, token: token);
     }
   }
 
@@ -511,16 +505,13 @@ class HueNetwork {
   /// that this device has permission to fetch which failed to be fetched in the
   /// last fetch.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the remote access token.
   ///
   /// If this method fails to fetch a resource with an error, the resource will
   /// be added back to the [failedFetches] list.
   Future<void> fetchAllFailedType(
     ResourceType type, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     final List<FailedResource> failedResources = [];
 
@@ -540,7 +531,7 @@ class HueNetwork {
         resourceId: resource.id,
         type: type,
         bridge: resource.bridge,
-        decrypter: decrypter,
+        token: token,
       );
     }
   }
@@ -553,17 +544,14 @@ class HueNetwork {
   /// bridges will be checked. If any of the bridges in the list are not already
   /// associated with this [HueNetwork], they will be ignored.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the remote access token.
   ///
   /// If this method fails to fetch a resource with an error, the resource will
   /// be added to the [failedFetches] list.
   Future<void> fetchAllType(
     ResourceType type, {
     List<Bridge>? bridges,
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     final List<Bridge> bridgesToCheck;
     if (bridges == null) {
@@ -607,7 +595,7 @@ class HueNetwork {
           bridgeIpAddr: bridge.ipAddress!,
           applicationKey: bridge.applicationKey!,
           resourceType: type,
-          decrypter: decrypter,
+          token: token,
         );
       } catch (e) {
         _addFailedFetch(
@@ -645,10 +633,7 @@ class HueNetwork {
   /// If you know which bridge the resource is on, you can provide the `bridge`
   /// parameter to speed up the process.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the remote access token.
   ///
   /// If this method fails to fetch the resource with an error, the resource
   /// will be added to the [failedFetches] list.
@@ -656,7 +641,7 @@ class HueNetwork {
     required String resourceId,
     required ResourceType type,
     Bridge? bridge,
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     final List<Bridge> bridgesToCheck;
     if (bridge == null) {
@@ -675,7 +660,7 @@ class HueNetwork {
           applicationKey: bridge.applicationKey!,
           resourceType: type,
           pathToResource: resourceId,
-          decrypter: decrypter,
+          token: token,
         );
       } catch (e) {
         _addFailedFetch(
@@ -993,14 +978,11 @@ class HueNetwork {
 
   /// Sends a PUT request to the bridge for each resource in the list.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the remote access token.
   ///
   /// NOTE: This method will not send a PUT request for a resource that has a
   /// null `bridge` property.
-  Future<void> put({String Function(String ciphertext)? decrypter}) async {
+  Future<void> put({String? token}) async {
     List<List<Resource>> nonPuttableResources = [
       bridgeHomes,
       behaviorScripts,
@@ -1019,7 +1001,7 @@ class HueNetwork {
         if (data.isEmpty) continue;
 
         if (resource.bridge != null) {
-          await resource.bridge!.put(resource, decrypter: decrypter);
+          await resource.bridge!.put(resource, token: token);
         }
       }
     }

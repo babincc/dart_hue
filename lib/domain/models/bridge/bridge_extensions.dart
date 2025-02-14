@@ -10,10 +10,7 @@ import 'package:dart_hue/utils/misc_tools.dart';
 extension HttpRequests on Bridge {
   /// Fetch the given `resource` from this bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// Will return `null` if:
   /// * The `resource` does not exist on this bridge
@@ -22,7 +19,7 @@ extension HttpRequests on Bridge {
   /// * Any other unforeseen error
   Future<Map<String, dynamic>?> get(
     Resource resource, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     if (ipAddress == null) return null;
     if (applicationKey == null) return null;
@@ -33,7 +30,7 @@ extension HttpRequests on Bridge {
         pathToResource: resource.id,
         applicationKey: applicationKey!,
         resourceType: resource.type,
-        decrypter: decrypter,
+        token: token,
       );
     } catch (_) {
       return null;
@@ -42,10 +39,7 @@ extension HttpRequests on Bridge {
 
   /// Fetch all resources of the given resource `type` from this bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// Will return `null` if:
   /// * This bridge does not have an IP address
@@ -53,7 +47,7 @@ extension HttpRequests on Bridge {
   /// * Any other unforeseen error
   Future<List<Map<String, dynamic>>?> getResource(
     ResourceType type, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     if (ipAddress == null) return null;
     if (applicationKey == null) return null;
@@ -63,7 +57,7 @@ extension HttpRequests on Bridge {
         bridgeIpAddr: ipAddress!,
         applicationKey: applicationKey!,
         resourceType: type,
-        decrypter: decrypter,
+        token: token,
       );
 
       if (result == null) return null;
@@ -76,10 +70,7 @@ extension HttpRequests on Bridge {
 
   /// Fetch the given `resource` from this bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// If the POST request is successful, then the original values in `resource`
   /// will be refreshed and set to their current values. To disable this
@@ -93,7 +84,7 @@ extension HttpRequests on Bridge {
   /// * Any other unforeseen error
   Future<Map<String, dynamic>?> post(
     Resource resource, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
     bool refreshOriginals = true,
   }) async {
     if (ipAddress == null) return null;
@@ -113,7 +104,7 @@ extension HttpRequests on Bridge {
         applicationKey: applicationKey!,
         resourceType: resource.type,
         body: body,
-        decrypter: decrypter,
+        token: token,
       );
 
       if (result == null) return null;
@@ -131,10 +122,7 @@ extension HttpRequests on Bridge {
 
   /// Fetch the given `resource` from this bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// If the PUT request is successful, then the original values in `resource`
   /// will be refreshed and set to their current values. To disable this
@@ -148,7 +136,7 @@ extension HttpRequests on Bridge {
   /// * Any other unforeseen error
   Future<Map<String, dynamic>?> put(
     Resource resource, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
     bool refreshOriginals = true,
   }) async {
     if (ipAddress == null) return null;
@@ -168,7 +156,7 @@ extension HttpRequests on Bridge {
         applicationKey: applicationKey!,
         resourceType: resource.type,
         body: body,
-        decrypter: decrypter,
+        token: token,
       );
 
       if (result == null) return null;
@@ -186,10 +174,7 @@ extension HttpRequests on Bridge {
 
   /// Fetch the given `resource` from this bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// Will return `null` if:
   /// * The `resource` does not exist on this bridge
@@ -198,7 +183,7 @@ extension HttpRequests on Bridge {
   /// * Any other unforeseen error
   Future<Map<String, dynamic>?> delete(
     Resource resource, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     if (ipAddress == null) return null;
     if (applicationKey == null) return null;
@@ -209,7 +194,7 @@ extension HttpRequests on Bridge {
         pathToResource: resource.id,
         applicationKey: applicationKey!,
         resourceType: resource.type,
-        decrypter: decrypter,
+        token: token,
       );
     } catch (_) {
       return null;

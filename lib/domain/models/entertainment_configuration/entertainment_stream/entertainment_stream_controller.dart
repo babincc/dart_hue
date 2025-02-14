@@ -75,10 +75,7 @@ class EntertainmentStreamController {
   ///
   /// The `bridge` parameter is the bridge to establish the handshake with.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// If the stream is inactive for 10 seconds, that is, if [_currentPacket] is
   /// `null` for 10 seconds, the stream will end.
@@ -88,7 +85,7 @@ class EntertainmentStreamController {
   /// [TokenRepo.refreshRemoteToken].
   Future<bool> startStreaming(
     Bridge bridge, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     // Init variables
     _reset();
@@ -101,7 +98,7 @@ class EntertainmentStreamController {
           if (_numSkips >= _maxNumSkips) {
             await stopStreaming(
               bridge,
-              decrypter: decrypter,
+              token: token,
             );
           }
 
@@ -187,7 +184,7 @@ class EntertainmentStreamController {
       bridge,
       entertainmentConfigurationId,
       _dtlsData,
-      decrypter: decrypter,
+      token,
     );
   }
 
@@ -195,17 +192,14 @@ class EntertainmentStreamController {
   ///
   /// The `bridge` parameter is the bridge to establish the handshake with.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
   /// [TokenRepo.refreshRemoteToken].
   Future<bool> stopStreaming(
     Bridge bridge, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async {
     // Reset variables
     _reset();
@@ -215,7 +209,7 @@ class EntertainmentStreamController {
       bridge,
       entertainmentConfigurationId,
       _dtlsData,
-      decrypter: decrypter,
+      token,
     );
   }
 

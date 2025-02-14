@@ -20,8 +20,8 @@ Before the user can use your app to communicate remotely with their bridges, the
 
 ```dart
 BridgeDiscoveryRepo.remoteAuthRequest(
-  clientId: "[clientId]",
-  redirectUri: "darthue://auth", // "Callback URL" on Hue's site
+  clientId: '[clientId]',
+  redirectUri: 'darthue://auth', // "Callback URL" on Hue's site
 );
 ```
 
@@ -134,14 +134,15 @@ void initState() {
             stateSecret = resState;
           }
 
+          // TODO: Before continuing, you should compare the stateSecret above
+          //  to the one given by [BridgeDiscoveryRepo.remoteAuthRequest]. If
+          //  they are not the same, do not proceed.
+
           TokenRepo.fetchRemoteToken(
             clientId: widget.clientId,
             clientSecret: widget.clientSecret,
             pkce: pkce,
             code: code,
-            stateSecret: stateSecret,
-            decrypter: (ciphertext) =>
-              ciphertext.substring(4, ciphertext.length - 4),
           );
         }
       } catch (_) {
@@ -167,8 +168,9 @@ The access tokens expire. You will need to keep them up to date, or the user wil
 // `clientID` and `clientSecret` are found in your Hue Dev account where you
 // added your remote API ID.
 await TokenRepo.refreshRemoteToken(
-  clientId: "[clientId]",
-  clientSecret: "[clientSecret]",
+  clientId: '[clientId]',
+  clientSecret: '[clientSecret]',
+  oldRemoteToken: '[oldRemoteToken]',
 );
 ```
 

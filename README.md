@@ -4,7 +4,7 @@
 
 **!!!!!!!!!!**
 
-**IMPORTANT NOTE:** This is the pure dart version of Flutter Hue. By stripping away its Flutter dependencies, this version is not as pleasant to use. If you are using Flutter, and do not need the pure Dart version, use [flutter_hue](https://pub.dev/packages/flutter_hue) instead.
+**IMPORTANT NOTE:** This is the pure Dart version of Flutter Hue. By stripping away its Flutter dependencies, this version is not as pleasant to use. If you are using Flutter, and do not need the pure Dart version, use [flutter_hue](https://pub.dev/packages/flutter_hue) instead.
 
 **!!!!!!!!!!**
 
@@ -53,7 +53,7 @@ In the `pubspec.yaml` of your dart project, add the following dependency:
 
 ```yaml
 dependencies:
-  dart_hue: ^2.0.0-beta.16
+  dart_hue: ^2.0.0-beta.17
 ```
 
 Import it to each file you use it in:

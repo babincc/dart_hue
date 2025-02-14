@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dart_hue/domain/models/resource_type.dart';
-import 'package:dart_hue/domain/repos/token_repo.dart';
 import 'package:dart_hue/domain/services/hue_http_client.dart';
 import 'package:dart_hue/exceptions/expired_token_exception.dart';
 import 'package:dart_hue/utils/misc_tools.dart';
@@ -85,10 +84,7 @@ class HueHttpRepo {
   /// The `resourceType` is used to let the bridge know what type of resource is
   /// being queried.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
@@ -98,7 +94,7 @@ class HueHttpRepo {
     String? pathToResource,
     required String applicationKey,
     required ResourceType? resourceType,
-    String Function(String ciphertext)? decrypter,
+    required String? token,
   }) async {
     return await HueHttpClient.get(
       url: getTargetUrl(
@@ -112,8 +108,6 @@ class HueHttpRepo {
     ).timeout(
       const Duration(seconds: 1),
       onTimeout: () async {
-        String? token = await TokenRepo.fetchToken(decrypter: decrypter);
-
         return await HueHttpClient.get(
           url: getTargetUrl(
             bridgeIpAddr: bridgeIpAddr,
@@ -143,10 +137,7 @@ class HueHttpRepo {
   ///
   /// `body` is the actual content being sent to the bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
@@ -157,7 +148,7 @@ class HueHttpRepo {
     required String applicationKey,
     required ResourceType? resourceType,
     required String body,
-    String Function(String ciphertext)? decrypter,
+    required String? token,
   }) async {
     return await HueHttpClient.post(
       url: getTargetUrl(
@@ -172,8 +163,6 @@ class HueHttpRepo {
     ).timeout(
       const Duration(seconds: 1),
       onTimeout: () async {
-        String? token = await TokenRepo.fetchToken(decrypter: decrypter);
-
         return await HueHttpClient.post(
           url: getTargetUrl(
             bridgeIpAddr: bridgeIpAddr,
@@ -204,10 +193,7 @@ class HueHttpRepo {
   ///
   /// `body` is the actual content being sent to the bridge.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
@@ -218,7 +204,7 @@ class HueHttpRepo {
     required String applicationKey,
     required ResourceType? resourceType,
     required String body,
-    String Function(String ciphertext)? decrypter,
+    required String? token,
   }) async {
     return await HueHttpClient.put(
       url: getTargetUrl(
@@ -233,8 +219,6 @@ class HueHttpRepo {
     ).timeout(
       const Duration(seconds: 1),
       onTimeout: () async {
-        String? token = await TokenRepo.fetchToken(decrypter: decrypter);
-
         return await HueHttpClient.put(
           url: getTargetUrl(
             bridgeIpAddr: bridgeIpAddr,
@@ -263,10 +247,7 @@ class HueHttpRepo {
   /// The `resourceType` is used to let the bridge know what type of resource is
   /// being queried.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
@@ -276,7 +257,7 @@ class HueHttpRepo {
     required String pathToResource,
     required String applicationKey,
     required ResourceType? resourceType,
-    String Function(String ciphertext)? decrypter,
+    required String? token,
   }) async {
     return await HueHttpClient.delete(
       url: getTargetUrl(
@@ -290,8 +271,6 @@ class HueHttpRepo {
     ).timeout(
       const Duration(seconds: 1),
       onTimeout: () async {
-        String? token = await TokenRepo.fetchToken(decrypter: decrypter);
-
         return await HueHttpClient.delete(
           url: getTargetUrl(
             bridgeIpAddr: bridgeIpAddr,

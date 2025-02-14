@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dart_hue/domain/models/bridge/discovered_bridge.dart';
 import 'package:http/http.dart';
 import 'package:multicast_dns/multicast_dns.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// The Dart Hue Bridge services.
 ///
@@ -93,21 +92,5 @@ class BridgeDiscoveryService {
     }
 
     return bridges;
-  }
-
-  /// Lets the user authorize the app to access the bridge remotely.
-  ///
-  /// This is step 1. Step 2 is [TokenService.fetchRemoteToken].
-  static Future<void> remoteAuthRequest({
-    required String url,
-  }) async {
-    final Uri uri = Uri.parse(url);
-
-    if (!await canLaunchUrl(uri)) return;
-
-    await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
   }
 }

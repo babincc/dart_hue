@@ -1,9 +1,8 @@
 // @author Christian Babin
-// @version 2.0.0-beta.16
+// @version 2.0.0-beta.17
 // https://github.com/babincc/dart_hue/blob/master/lib/dart_hue.dart
 
 export 'package:dart_hue/constants/api_fields.dart';
-export 'package:dart_hue/constants/folders.dart';
 export 'package:dart_hue/domain/models/behavior_instance/behavior_instance.dart';
 export 'package:dart_hue/domain/models/behavior_instance/behavior_instance_dependee.dart';
 export 'package:dart_hue/domain/models/behavior_script/behavior_script.dart';
@@ -109,8 +108,6 @@ export 'package:dart_hue/domain/models/zone/zone.dart';
 export 'package:dart_hue/domain/repos/bridge_discovery_repo.dart';
 export 'package:dart_hue/domain/repos/entertainment_stream_repo.dart';
 export 'package:dart_hue/domain/repos/hue_http_repo.dart';
-export 'package:dart_hue/domain/repos/local_storage_repo.dart';
-export 'package:dart_hue/domain/repos/maintenance_repo.dart';
 export 'package:dart_hue/domain/repos/token_repo.dart';
 export 'package:dart_hue/exceptions/coordinate_exception.dart';
 export 'package:dart_hue/exceptions/corrupt_token_data_exception.dart';
@@ -131,5 +128,4 @@ export 'package:dart_hue/utils/color_converter.dart';
 export 'package:dart_hue/utils/date_time_tool.dart';
 export 'package:dart_hue/utils/json_tool.dart';
 export 'package:dart_hue/utils/misc_tools.dart';
-export 'package:dart_hue/utils/my_file_explorer.dart';
 export 'package:dart_hue/utils/validators.dart';

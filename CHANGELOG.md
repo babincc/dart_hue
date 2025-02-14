@@ -1,3 +1,7 @@
+## 2.0.0-beta.17 - February 14, 2025
+
+- Core code should now be pure Dart. There were still some Flutter dependencies in the previous version
+
 ## 2.0.0-beta.16 - February 14, 2025
 
 - Core code is now pure Dart. Separated out Dart Hue from Flutter Hue

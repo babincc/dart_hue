@@ -5,6 +5,7 @@ import 'package:dart_hue/dart_hue.dart';
 import 'package:example/stream_demos/stream_demos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:radio_group_v2/radio_group_v2.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -103,6 +104,7 @@ class _HomePageState extends State<HomePage> {
 
           // Handle Dart Hue deep link
           if (pkce != null && code != null && resState != null) {
+            // ignore: unused_local_variable
             String stateSecret;
             if (resState.contains('-')) {
               stateSecret = resState.substring(0, resState.indexOf('-'));
@@ -110,41 +112,19 @@ class _HomePageState extends State<HomePage> {
               stateSecret = resState;
             }
 
+            // TODO: Before continuing, you should compare the stateSecret above
+            //  to the one given by [BridgeDiscoveryRepo.remoteAuthRequest]. If
+            //  they are not the same, do not proceed.
+
             TokenRepo.fetchRemoteToken(
               clientId: widget.clientId,
               clientSecret: widget.clientSecret,
               pkce: pkce,
               code: code,
-              stateSecret: stateSecret,
-              decrypter: (ciphertext) =>
-                  ciphertext.substring(4, ciphertext.length - 4),
             );
           }
         } catch (_) {
           // Do nothing
-        }
-      },
-    );
-
-    // Initialize Dart Hue and keep all of the locally stored data up to
-    // date.
-    MaintenanceRepo.maintain(
-      clientId: widget.clientId,
-      clientSecret: widget.clientSecret,
-      redirectUri: 'darthue://auth',
-      deviceName: 'TestDevice',
-      stateEncrypter: (plaintext) => 'abcd${plaintext}1234',
-    );
-
-    // Fetch all of the bridges that have been connected to in the past.
-    BridgeDiscoveryRepo.fetchSavedBridges().then(
-      (bridges) {
-        if (bridges.isNotEmpty) {
-          setState(() {
-            oldBridges.clear();
-            oldBridges.addAll(bridges);
-            bridge = oldBridges.first;
-          });
         }
       },
     );
@@ -573,12 +553,26 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
 
-    await BridgeDiscoveryRepo.remoteAuthRequest(
+    final Map<String, String> data =
+        await BridgeDiscoveryRepo.remoteAuthRequest(
       clientId: widget.clientId,
       redirectUri: 'darthue://auth',
       deviceName: 'TestDevice',
-      encrypter: (plaintext) => 'abcd${plaintext}1234',
     );
+
+    if (data.isEmpty || data['url'] == null || data['state'] == null) {
+      // ignore: avoid_print
+      print('Failed to establish remote contact');
+    } else {
+      final Uri uri = Uri.parse(data['url']!);
+
+      if (!await canLaunchUrl(uri)) return;
+
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    }
 
     setState(() {
       isLoading = false;

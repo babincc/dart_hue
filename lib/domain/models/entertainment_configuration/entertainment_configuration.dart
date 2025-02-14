@@ -247,42 +247,36 @@ class EntertainmentConfiguration extends Resource {
   ///
   /// The `bridge` parameter is the bridge to establish the handshake with.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
   /// [TokenRepo.refreshRemoteToken].
   Future<bool> startStreaming(
     Bridge bridge, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async =>
       await _entertainmentStream.startStreaming(
         bridge,
-        decrypter: decrypter,
+        token: token,
       );
 
   /// Stop streaming for `this` entertainment configuration.
   ///
   /// The `bridge` parameter is the bridge to establish the handshake with.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
   /// [TokenRepo.refreshRemoteToken].
   Future<bool> stopStreaming(
     Bridge bridge, {
-    String Function(String ciphertext)? decrypter,
+    String? token,
   }) async =>
       _entertainmentStream.stopStreaming(
         bridge,
-        decrypter: decrypter,
+        token: token,
       );
 
   /// The current length of the queue in the given `channel`.

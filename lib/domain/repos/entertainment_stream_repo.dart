@@ -16,10 +16,7 @@ class EntertainmentStreamRepo {
   ///
   /// The `bridge` parameter is the bridge to establish the handshake with.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// `token` is the access token for remote access.
   ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
@@ -27,13 +24,13 @@ class EntertainmentStreamRepo {
   static Future<bool> startStreaming(
     Bridge bridge,
     String entertainmentConfigurationId,
-    DtlsData dtlsData, {
-    String Function(String ciphertext)? decrypter,
-  }) async {
+    DtlsData dtlsData,
+    String? token,
+  ) async {
     final bool isStarted = await _startStreaming(
       bridge,
       entertainmentConfigurationId,
-      decrypter: decrypter,
+      token,
     );
 
     if (!isStarted) return false;
@@ -41,16 +38,16 @@ class EntertainmentStreamRepo {
     return await EntertainmentStreamRepo._establishDtlsHandshake(
       bridge: bridge,
       dtlsData: dtlsData,
-      decrypter: decrypter,
+      token: token,
     );
   }
 
   /// Start streaming for the givin `entertainmentConfiguration`.
   static Future<bool> _startStreaming(
     Bridge bridge,
-    String entertainmentConfigurationId, {
-    String Function(String ciphertext)? decrypter,
-  }) async {
+    String entertainmentConfigurationId,
+    String? token,
+  ) async {
     final String body = JsonTool.writeJson(
       {ApiFields.action: ApiFields.start},
     );
@@ -58,8 +55,8 @@ class EntertainmentStreamRepo {
     return await __setStreamingState(
       bridge,
       entertainmentConfigurationId,
-      decrypter,
       body,
+      token,
     );
   }
 
@@ -67,24 +64,24 @@ class EntertainmentStreamRepo {
   static Future<bool> stopStreaming(
     Bridge bridge,
     String entertainmentConfigurationId,
-    DtlsData dtlsData, {
-    String Function(String ciphertext)? decrypter,
-  }) async {
+    DtlsData dtlsData,
+    String? token,
+  ) async {
     await dtlsData.tryDisconnect();
 
     return await _stopStreaming(
       bridge,
       entertainmentConfigurationId,
-      decrypter: decrypter,
+      token,
     );
   }
 
   /// Stop streaming for the givin `entertainmentConfiguration`.
   static Future<bool> _stopStreaming(
     Bridge bridge,
-    String entertainmentConfigurationId, {
-    String Function(String ciphertext)? decrypter,
-  }) async {
+    String entertainmentConfigurationId,
+    String? token,
+  ) async {
     final String body = JsonTool.writeJson(
       {ApiFields.action: ApiFields.stop},
     );
@@ -92,8 +89,8 @@ class EntertainmentStreamRepo {
     return await __setStreamingState(
       bridge,
       entertainmentConfigurationId,
-      decrypter,
       body,
+      token,
     );
   }
 
@@ -101,8 +98,8 @@ class EntertainmentStreamRepo {
   static Future<bool> __setStreamingState(
     Bridge bridge,
     String entertainmentConfigurationId,
-    String Function(String ciphertext)? decrypter,
     String body,
+    String? token,
   ) async {
     final String? bridgeIpAddr = bridge.ipAddress;
     final String? appKey = bridge.applicationKey;
@@ -116,7 +113,7 @@ class EntertainmentStreamRepo {
       resourceType: ResourceType.entertainmentConfiguration,
       pathToResource: entertainmentConfigurationId,
       body: body,
-      decrypter: decrypter,
+      token: token,
     );
 
     if (result == null) return false;
@@ -142,23 +139,18 @@ class EntertainmentStreamRepo {
   ///
   /// The `dtlsData` parameter is the DTLS data to establish the handshake with.
   ///
-  /// `decrypter` When the old tokens are read from local storage, they are
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
-  ///
   /// May throw [ExpiredAccessTokenException] if trying to connect to the bridge
   /// remotely and the token is expired. If this happens, refresh the token with
   /// [TokenRepo.refreshRemoteToken].
   static Future<bool> _establishDtlsHandshake({
     required Bridge bridge,
     required DtlsData dtlsData,
-    String Function(String)? decrypter,
+    required String? token,
   }) async =>
       EntertainmentStreamService.establishDtlsHandshake(
         bridge: bridge,
         dtlsData: dtlsData,
-        decrypter: decrypter,
+        token: token,
       );
 
   static List<int> _getPacketBase(

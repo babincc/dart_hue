@@ -1,58 +1,28 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dart_hue/constants/api_fields.dart';
-import 'package:dart_hue/constants/folders.dart';
 import 'package:dart_hue/domain/models/bridge/bridge.dart';
 import 'package:dart_hue/domain/models/bridge/discovered_bridge.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/domain/repos/hue_http_repo.dart';
-import 'package:dart_hue/domain/repos/local_storage_repo.dart';
 import 'package:dart_hue/domain/services/bridge_discovery_service.dart';
 import 'package:dart_hue/domain/services/hue_http_client.dart';
 import 'package:dart_hue/utils/json_tool.dart';
 import 'package:dart_hue/utils/misc_tools.dart';
-import 'package:dart_hue/utils/my_file_explorer.dart';
 
 /// This is the way to communicate with Dart Hue Bridge services.
 class BridgeDiscoveryRepo {
-  /// The name of the file that stores the state secret.
-  ///
-  /// This allows a secret key to be generated and saved so the user can leave
-  /// the app and come back and still have the same secret key.
-  static const String stateSecretFile = 'fh_ss_validator';
-
   /// Searches the network for Philips Hue bridges.
   ///
   /// Returns a list of [DiscoveredBridge] objects. These contain the IP address
   /// of the bridge and a partial ID of the bridge.
   ///
-  /// If saved bridges are not saved to the default folder, provide their
-  /// location with `savedBridgesDir`.
-  ///
-  /// `decrypter` When the bridge data is read from local storage, it is
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
+  /// If `savedBridges` is provided, the bridges that are already saved to the
+  /// device will be removed from the search results.
   static Future<List<DiscoveredBridge>> discoverBridges({
-    Directory? savedBridgesDir,
-    bool writeToLocal = true,
-    String Function(String ciphertext)? decrypter,
+    List<Bridge> savedBridges = const [],
   }) async {
-    /// The bridges already saved to this device.
-    List<Bridge> savedBridges;
-
-    if (MiscTools.isWeb) {
-      // cookies instead of local storage (not yet implemented)
-      savedBridges = [];
-    } else {
-      savedBridges = await fetchSavedBridges(
-        decrypter: decrypter,
-        directory: savedBridgesDir,
-      );
-    }
-
     /// Bridges found using MDNS.
     List<DiscoveredBridge> bridgesFromMdns;
     if (MiscTools.isWeb) {
@@ -103,23 +73,6 @@ class BridgeDiscoveryRepo {
       }
     }
 
-    // Keep locally saved bridges up to date.
-    if (writeToLocal) {
-      for (final DiscoveredBridge newBridge in newBridges) {
-        // This will go through each of the bridges who's IP address have just
-        // been collected and tries to connect to them. If there is a successful
-        // connection, then this isn't the first time contact has been made with
-        // the bridge. In this case, the file will be overridden with the new IP
-        // address.
-        await firstContact(
-          bridgeIpAddr: newBridge.ipAddress,
-          savedBridgesDir: savedBridgesDir,
-          writeToLocal: writeToLocal,
-          controller: DiscoveryTimeoutController(timeoutSeconds: 1),
-        );
-      }
-    }
-
     return newBridges;
   }
 
@@ -130,29 +83,16 @@ class BridgeDiscoveryRepo {
   /// button on their bridge to confirm they have physical access to it.
   ///
   /// In the event of a successful pairing, this method returns a bridge object
-  /// that represents the bridge it just connected to. Before it returns the
-  /// bridge, if `writeToLocal` is `true`, it will write it to local storage to
-  /// be saved for later.
-  ///
-  /// If writing saved bridges to a non-default location, provide that location
-  /// with `savedBridgesDir`.
+  /// that represents the bridge it just connected to.
   ///
   /// `controller` gives more control over this process. It lets you decide how
   /// many seconds the user has to press the button on their bridge. It also
   /// gives the ability to cancel the discovery process at any time.
   ///
-  /// `encrypter` When the bridge is written to local storage, it is encrypted.
-  /// This parameter allows you to provide your own encryption method. This will
-  /// be used in addition to the default encryption method. This will be
-  /// performed after the default encryption method.
-  ///
   /// If the pairing fails, this method returns `null`.
   static Future<Bridge?> firstContact({
     required String bridgeIpAddr,
-    Directory? savedBridgesDir,
-    bool writeToLocal = true,
     DiscoveryTimeoutController? controller,
-    String Function(String plaintext)? encrypter,
   }) async {
     final DiscoveryTimeoutController timeoutController =
         controller ?? DiscoveryTimeoutController();
@@ -218,6 +158,7 @@ class BridgeDiscoveryRepo {
       bridgeIpAddr: bridgeIpAddr,
       applicationKey: appKey!,
       resourceType: ResourceType.bridge,
+      token: null,
     );
 
     if (bridgeJson == null) return null;
@@ -229,15 +170,6 @@ class BridgeDiscoveryRepo {
     );
 
     if (bridge.id.isEmpty) return null;
-
-    // Save the bridge locally.
-    if (writeToLocal) {
-      _writeLocalBridge(
-        bridge,
-        encrypter: encrypter,
-        savedBridgesDir: savedBridgesDir,
-      );
-    }
 
     return bridge;
   }
@@ -266,20 +198,16 @@ class BridgeDiscoveryRepo {
   /// Hue, it is recommended that you compare the string returned from this
   /// method, to the one that is returned from Hue.
   ///
-  /// `encrypter` When the state value is stored locally, it is encrypted. This
-  /// parameter allows you to provide your own encryption method. This will be
-  /// used in addition to the default encryption method. This will be performed
-  /// before the default encryption method.
-  ///
-  /// Returns the `state` value that is sent with the GET request. This is
-  /// prepended with the long, random number. Between the random number and the
-  /// provided `state` will be a - (dash).
-  static Future<String> remoteAuthRequest({
+  /// Returns a map with the key `url` and `state`. The `url` is the URL that
+  /// the user needs to visit to grant access to the app. The `state` value is
+  /// what is sent with the GET request. This is prepended with the long, random
+  /// number. Between the random number and the provided `state` will be a -
+  /// (dash).
+  static Future<Map<String, String>> remoteAuthRequest({
     required String clientId,
     required String redirectUri,
     String? deviceName,
     String? state,
-    String Function(String plaintext)? encrypter,
   }) async {
     final StringBuffer urlBuffer =
         StringBuffer('https://api.meethue.com/v2/oauth2/authorize?');
@@ -312,120 +240,7 @@ class BridgeDiscoveryRepo {
       urlBuffer.write('&${ApiFields.deviceName}=$deviceName');
     }
 
-    // Write the state secret to local storage.
-    await LocalStorageRepo.write(
-      content: stateBuffer.toString(),
-      folder: Folder.tmp,
-      fileName: stateSecretFile,
-      encrypter: encrypter,
-    );
-
-    // Call the service.
-    await BridgeDiscoveryService.remoteAuthRequest(url: urlBuffer.toString());
-
-    return stateBuffer.toString();
-  }
-
-  /// Writes the `bridge` data to local storage.
-  ///
-  /// `encrypter` When the bridge data is stored locally, it is encrypted. This
-  /// parameter allows you to provide your own encryption method. This will be
-  /// used in addition to the default encryption method. This will be performed
-  /// before the default encryption method.
-  ///
-  /// `savedBridgesDir` The directory where the bridge data will be saved. If
-  /// this is not provided, the default directory will be used.
-  static Future<void> _writeLocalBridge(
-    Bridge bridge, {
-    String Function(String plaintext)? encrypter,
-    Directory? savedBridgesDir,
-  }) async {
-    if (MiscTools.isWeb) {
-      // cookies instead of local storage (not yet implemented)
-    } else {
-      await MyFileExplorer().ensureInitialized();
-
-      Directory dir = savedBridgesDir ??
-          Directory(MyFileExplorer().createPath(
-            localDir: LocalDir.appSupportDir,
-            subPath: Folders.bridgesSubPath,
-          ));
-
-      String filePath =
-          MyFileExplorer.getNewNameWithPath(dir.path, '${bridge.id}.json');
-
-      File(filePath).writeAsStringSync(
-        LocalStorageRepo.encrypt(
-          JsonTool.writeJson(
-            bridge.toJson(optimizeFor: OptimizeFor.dontOptimize),
-          ),
-          encrypter,
-        ),
-      );
-    }
-  }
-
-  /// Fetch all of the bridges already saved to the user's device.
-  ///
-  /// `decrypter` When the bridge data is read from local storage, it is
-  /// decrypted. This parameter allows you to provide your own decryption
-  /// method. This will be used in addition to the default decryption method.
-  /// This will be performed after the default decryption method.
-  ///
-  /// `directory` The directory where the bridge data will be saved. If this is
-  /// not provided, the default directory will be used.
-  ///
-  /// If the bridges are not saved to the default folder location, provide their
-  /// location with `directory`.
-  static Future<List<Bridge>> fetchSavedBridges({
-    String Function(String ciphertext)? decrypter,
-    Directory? directory,
-  }) async {
-    List<Bridge> bridges = [];
-
-    if (MiscTools.isWeb) {
-      // cookies instead of local storage (not yet implemented)
-    } else {
-      await MyFileExplorer().ensureInitialized();
-
-      final Directory dir = directory ??
-          Directory(
-            MyFileExplorer().createPath(
-              localDir: LocalDir.appSupportDir,
-              subPath: Folders.bridgesSubPath,
-            ),
-          );
-
-      /// Create the directory if it does not exist.
-      if (!dir.existsSync()) {
-        dir.createSync(recursive: true);
-        return [];
-      }
-
-      // Get the bridge files from the directory.
-      final List<FileSystemEntity> entities = await dir.list().toList();
-      final List<File> bridgeFiles = entities
-          .whereType<File>()
-          .where((file) =>
-              MyFileExplorer.tryParseFileExt(file.path)?.toLowerCase() ==
-              '.json')
-          .toList();
-
-      /// Parse the bridge files into [Bridge] objects.
-      for (File bridgeFile in bridgeFiles) {
-        String fileContents = LocalStorageRepo.decrypt(
-              bridgeFile.readAsStringSync(),
-              decrypter,
-            ) ??
-            '';
-
-        Map<String, dynamic> bridgeJson = JsonTool.readJson(fileContents);
-
-        bridges.add(Bridge.fromJson(bridgeJson));
-      }
-    }
-
-    return bridges;
+    return {'url': urlBuffer.toString(), 'state': stateBuffer.toString()};
   }
 }
 
