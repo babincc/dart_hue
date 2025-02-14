@@ -6,7 +6,7 @@ import 'package:dart_hue/domain/models/room/room_archetype.dart';
 import 'package:dart_hue/domain/models/room/room_metadata.dart';
 import 'package:dart_hue/exceptions/invalid_name_exception.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Room testRoom = Room(
@@ -215,7 +215,7 @@ void main() {
             () {
               testRoom.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -227,7 +227,7 @@ void main() {
             () {
               testRoom.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -244,7 +244,7 @@ void main() {
                 ),
               );
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

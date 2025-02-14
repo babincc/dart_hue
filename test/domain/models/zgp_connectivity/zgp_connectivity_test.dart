@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/domain/models/zgp_connectivity/zgp_connectivity.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final ZgpConnectivity testZgpConnectivity = ZgpConnectivity(
@@ -171,7 +171,7 @@ void main() {
             () {
               testZgpConnectivity.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -183,7 +183,7 @@ void main() {
             () {
               testZgpConnectivity.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/matter_fabric/matter_fabric.dart';
 import 'package:dart_hue/domain/models/matter_fabric/matter_fabric_data.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final MatterFabric testMatterFabric = MatterFabric(
@@ -172,7 +172,7 @@ void main() {
             () {
               testMatterFabric.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -184,7 +184,7 @@ void main() {
             () {
               testMatterFabric.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

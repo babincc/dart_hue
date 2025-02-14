@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/geolocation/geolocation.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/exceptions/coordinate_exception.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Geolocation testGeolocation = Geolocation(
@@ -162,7 +162,7 @@ void main() {
             () {
               testGeolocation.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -174,7 +174,7 @@ void main() {
             () {
               testGeolocation.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -194,7 +194,7 @@ void main() {
                     latitude: -91,
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -223,7 +223,7 @@ void main() {
                     latitude: 91,
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -252,7 +252,7 @@ void main() {
                     longitude: -181,
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -281,7 +281,7 @@ void main() {
                     longitude: 181,
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

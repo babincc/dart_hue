@@ -7,7 +7,7 @@ import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/exceptions/invalid_name_exception.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Device testDevice = Device(
@@ -217,7 +217,7 @@ void main() {
             () {
               testDevice.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -234,7 +234,7 @@ void main() {
                 ),
               );
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -272,7 +272,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -295,7 +295,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

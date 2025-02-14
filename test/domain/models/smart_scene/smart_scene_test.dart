@@ -10,7 +10,7 @@ import 'package:dart_hue/domain/models/smart_scene/smart_scene_week/smart_scene_
 import 'package:dart_hue/exceptions/invalid_name_exception.dart';
 import 'package:dart_hue/exceptions/time_format_exception.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final SmartScene testSmartScene = SmartScene(
@@ -248,7 +248,7 @@ void main() {
             () {
               testSmartScene.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -260,7 +260,7 @@ void main() {
             () {
               testSmartScene.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -277,7 +277,7 @@ void main() {
                 ),
               );
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -320,7 +320,7 @@ void main() {
                     recurrence: ['sunday'],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -348,7 +348,7 @@ void main() {
                     recurrence: ['sunday'],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -376,7 +376,7 @@ void main() {
                     recurrence: ['sunday'],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -404,7 +404,7 @@ void main() {
                     recurrence: ['sunday'],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -432,7 +432,7 @@ void main() {
                     recurrence: ['sunday'],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -460,7 +460,7 @@ void main() {
                     recurrence: ['sunday'],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

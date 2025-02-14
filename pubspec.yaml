@@ -1,7 +1,7 @@
 name: dart_hue
 description: An SDK designed for the Dart language that enables developers to
   easily integrate Philips Hue smart devices into their applications.
-version: 2.0.0-beta.18
+version: 2.0.0-beta.19
 repository: https://github.com/babincc/dart_hue
 issue_tracker: https://github.com/babincc/dart_hue/issues
 
@@ -26,7 +26,5 @@ dependencies:
   multicast_dns: ^0.3.2+7
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^5.0.0
+  test: ^1.25.15
   lints: ^5.0.0

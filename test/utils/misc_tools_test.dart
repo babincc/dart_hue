@@ -1,5 +1,5 @@
 import 'package:dart_hue/utils/misc_tools.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   group(

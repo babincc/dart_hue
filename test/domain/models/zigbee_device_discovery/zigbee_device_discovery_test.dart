@@ -4,7 +4,7 @@ import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/domain/models/zigbee_device_discovery/zigbee_device_discovery.dart';
 import 'package:dart_hue/domain/models/zigbee_device_discovery/zigbee_device_discovery_action.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final ZigbeeDeviceDiscovery testZigbeeDeviceDiscovery = ZigbeeDeviceDiscovery(
@@ -182,7 +182,7 @@ void main() {
             () {
               testZigbeeDeviceDiscovery.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -194,7 +194,7 @@ void main() {
             () {
               testZigbeeDeviceDiscovery.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -227,7 +227,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

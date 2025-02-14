@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/geofence_client/geofence_client.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/exceptions/invalid_name_exception.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final GeofenceClient testGeofenceClient = GeofenceClient(
@@ -161,7 +161,7 @@ void main() {
             () {
               testGeofenceClient.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -173,7 +173,7 @@ void main() {
             () {
               testGeofenceClient.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

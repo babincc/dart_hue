@@ -41,7 +41,7 @@ import 'package:dart_hue/exceptions/percentage_exception.dart';
 import 'package:dart_hue/exceptions/unit_interval_exception.dart';
 import 'package:dart_hue/utils/date_time_tool.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Light testLight = Light(
@@ -465,7 +465,7 @@ void main() {
             () {
               testLight.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -477,7 +477,7 @@ void main() {
             () {
               testLight.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -493,7 +493,7 @@ void main() {
                 id: 'bad_value',
               ));
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -515,7 +515,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -533,7 +533,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -551,7 +551,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -586,7 +586,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -603,7 +603,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -620,7 +620,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -637,7 +637,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -690,7 +690,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -707,7 +707,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -754,7 +754,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -772,7 +772,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -825,7 +825,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -842,7 +842,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -891,7 +891,7 @@ void main() {
                         status: 'valueZ', statusValues: ['value1', 'value2']),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -910,7 +910,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -929,7 +929,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -949,7 +949,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1035,7 +1035,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1052,7 +1052,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1118,7 +1118,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1139,7 +1139,7 @@ void main() {
           //           ),
           //         );
           //       },
-          //       throwsAssertionError,
+          //       throwsA(isA<AssertionError>()),
           //     );
           //   },
           // );
@@ -1201,7 +1201,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1371,7 +1371,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1390,7 +1390,7 @@ void main() {
           //           ),
           //         );
           //       },
-          //       throwsAssertionError,
+          //       throwsA(isA<AssertionError>()),
           //     );
           //   },
           // );
@@ -1438,7 +1438,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1457,7 +1457,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1521,7 +1521,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1541,7 +1541,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1591,7 +1591,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -1611,7 +1611,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

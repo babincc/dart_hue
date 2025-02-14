@@ -1,6 +1,6 @@
 import 'package:color/color.dart';
 import 'package:dart_hue/dart_hue.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   group(

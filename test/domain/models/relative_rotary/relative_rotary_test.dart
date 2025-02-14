@@ -5,7 +5,7 @@ import 'package:dart_hue/domain/models/relative_rotary/relative_rotary_last_even
 import 'package:dart_hue/domain/models/relative_rotary/relative_rotary_rotation.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final RelativeRotary testRelativeRotary = RelativeRotary(
@@ -186,7 +186,7 @@ void main() {
             () {
               testRelativeRotary.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -198,7 +198,7 @@ void main() {
             () {
               testRelativeRotary.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -218,7 +218,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -235,7 +235,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -252,7 +252,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -269,7 +269,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

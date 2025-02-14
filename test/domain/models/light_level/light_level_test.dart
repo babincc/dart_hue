@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/light_level/light_level.dart';
 import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final LightLevel testLightLevel = LightLevel(
@@ -173,7 +173,7 @@ void main() {
             () {
               testLightLevel.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -185,7 +185,7 @@ void main() {
             () {
               testLightLevel.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

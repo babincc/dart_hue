@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/domain/models/zigbee_connectivity/zigbee_connectivity.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final ZigbeeConnectivity testZigbeeConnectivity = ZigbeeConnectivity(
@@ -177,7 +177,7 @@ void main() {
             () {
               testZigbeeConnectivity.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -189,7 +189,7 @@ void main() {
             () {
               testZigbeeConnectivity.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -201,7 +201,7 @@ void main() {
             () {
               testZigbeeConnectivity.copyWith(macAddress: '123456789');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -213,7 +213,7 @@ void main() {
             () {
               testZigbeeConnectivity.copyWith(macAddress: '');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

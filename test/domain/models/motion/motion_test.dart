@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/motion/motion.dart';
 import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Motion testMotion = Motion(
@@ -172,7 +172,7 @@ void main() {
             () {
               testMotion.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -184,7 +184,7 @@ void main() {
             () {
               testMotion.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

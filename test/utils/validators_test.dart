@@ -1,6 +1,6 @@
 import 'package:dart_hue/domain/models/light/light_color/light_color_xy.dart';
 import 'package:dart_hue/utils/validators.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   group(

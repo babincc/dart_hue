@@ -1,3 +1,7 @@
+## 2.0.0-beta.19 - February 14, 2025
+
+- Removed Flutter based dev_dependencies
+
 ## 2.0.0-beta.18 - February 14, 2025
 
 - Removed `dart:ui`, hopefully this was the final Flutter dependency

@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/button/button.dart';
 import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Button testButton = Button(
@@ -172,7 +172,7 @@ void main() {
             () {
               testButton.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -184,7 +184,7 @@ void main() {
             () {
               testButton.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -196,7 +196,7 @@ void main() {
             () {
               testButton.copyWith(controlId: -14);
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -208,7 +208,7 @@ void main() {
             () {
               testButton.copyWith(controlId: 9);
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

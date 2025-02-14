@@ -3,7 +3,7 @@ import 'package:dart_hue/domain/models/bridge/bridge.dart';
 import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Bridge testBridge = Bridge(
@@ -175,7 +175,7 @@ void main() {
             () {
               testBridge.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -187,7 +187,7 @@ void main() {
             () {
               testBridge.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -199,7 +199,7 @@ void main() {
             () {
               testBridge.copyWith(ipAddress: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );

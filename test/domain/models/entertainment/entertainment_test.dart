@@ -5,7 +5,7 @@ import 'package:dart_hue/domain/models/entertainment/entertainment_segment/enter
 import 'package:dart_hue/domain/models/relative.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Entertainment testEntertainment = Entertainment(
@@ -196,7 +196,7 @@ void main() {
             () {
               testEntertainment.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -208,7 +208,7 @@ void main() {
             () {
               testEntertainment.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -220,7 +220,7 @@ void main() {
             () {
               testEntertainment.copyWith(maxStreams: 0);
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -242,7 +242,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -264,7 +264,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -286,7 +286,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

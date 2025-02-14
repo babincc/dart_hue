@@ -11,7 +11,7 @@ import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/exceptions/invalid_name_exception.dart';
 import 'package:dart_hue/exceptions/unit_interval_exception.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final EntertainmentConfiguration testEntertainmentConfiguration =
@@ -297,7 +297,7 @@ void main() {
             () {
               testEntertainmentConfiguration.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -309,7 +309,7 @@ void main() {
             () {
               testEntertainmentConfiguration.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -327,7 +327,7 @@ void main() {
                         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -344,7 +344,7 @@ void main() {
                     ),
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -383,7 +383,7 @@ void main() {
                     ],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -405,7 +405,7 @@ void main() {
                     ],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -432,7 +432,7 @@ void main() {
                     ],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );
@@ -467,7 +467,7 @@ void main() {
                     ],
                   );
                 },
-                throwsAssertionError,
+                throwsA(isA<AssertionError>()),
               );
             },
           );

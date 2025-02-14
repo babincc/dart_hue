@@ -2,7 +2,7 @@ import 'package:dart_hue/constants/api_fields.dart';
 import 'package:dart_hue/domain/models/homekit/homekit.dart';
 import 'package:dart_hue/domain/models/resource_type.dart';
 import 'package:dart_hue/utils/json_tool.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 void main() {
   final Homekit testHomekit = Homekit(
@@ -159,7 +159,7 @@ void main() {
             () {
               testHomekit.copyWith(id: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
@@ -171,7 +171,7 @@ void main() {
             () {
               testHomekit.copyWith(idV1: 'bad_value');
             },
-            throwsAssertionError,
+            throwsA(isA<AssertionError>()),
           );
         },
       );
