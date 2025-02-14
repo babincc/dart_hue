@@ -72,20 +72,6 @@ Due to the length of these instructions, they have been placed in their own docu
 
 Once you have completed the steps in the above document, you will be able to communicate with a bridge remotely using the same steps as all of the examples below.
 
-### Highly Recommended
-
-It is not necessary, but it is highly recommended that you add this code snippet to the root of your app. It will keep the locally stored data (bridges, tokens, etc.) up to date.
-
-```dart
-MaintenanceRepo.maintain(
-  clientId: "[clientId]",
-  clientSecret: "[clientSecret]",
-  redirectUri: "darthue://auth",
-);
-```
-
-Note: If your app does not support remote connection, just use `MaintenanceRepo.maintainBridges` to maintain your local data.
-
 ### Example 1 - Get bridge IPs
 
 This example shows how to get a list of all of the IP addresses of the Philips Hue bridges on the network.
@@ -181,20 +167,7 @@ myColor.toHex(); // "ff8a4888"
 myColor.toInt(); // 4287252616
 ```
 
-### Example 7 - Hue icons
-
-This example shows how to use Philips Hue's icons.
-
-```dart
-Icon(HueIcon.classicBulb);
-
-IconButton(
-    onPressed: () {},
-    icon: Icon(HueIcon.stringLight),
-);
-```
-
-### Example 8 - Entertainment Streaming
+### Example 7 - Entertainment Streaming
 
 This example shows how to use Entertainment Streaming. It's important to note, you will need to use the official Philips Hue app to create entertainment areas before you can use Dart Hue to interact with them. At the time of writing this, Philips does not give third party apps the ability to create entertainment areas.
 
