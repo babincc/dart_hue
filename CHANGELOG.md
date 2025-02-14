@@ -1,3 +1,7 @@
+## 2.0.0-beta.18 - February 14, 2025
+
+- Removed `dart:ui`, hopefully this was the final Flutter dependency
+
 ## 2.0.0-beta.17 - February 14, 2025
 
 - Core code should now be pure Dart. There were still some Flutter dependencies in the previous version
