@@ -14,7 +14,7 @@ class TokenService {
   /// Fetches the remote token that allows the user to connect to the bridge
   /// remotely.
   ///
-  /// This is step 2. Step 1 is [BridgeDiscoveryService.remoteAuthRequest].
+  /// This is step 2. Step 1 is [BridgeDiscoveryRepo.remoteAuthRequest].
   static Future<Map<String, dynamic>?> fetchRemoteToken({
     required String clientId,
     required String clientSecret,

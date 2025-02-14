@@ -1,6 +1,6 @@
-import 'dart:ui';
-
+import 'package:color/color.dart';
 import 'package:dart_hue/utils/color_converter.dart';
+import 'package:dart_hue/utils/misc_tools.dart';
 
 /// Represents a color that can be sent as a command to the bridge.
 abstract class EntertainmentStreamColor {
@@ -178,17 +178,17 @@ class ColorXy extends EntertainmentStreamColor {
     ColorXy b,
     double t,
   ) {
-    final double x = clampDouble(
+    final double x = MiscTools.clampDouble(
       a.x + (b.x - a.x) * t,
       0.0,
       1.0,
     );
-    final double y = clampDouble(
+    final double y = MiscTools.clampDouble(
       a.y + (b.y - a.y) * t,
       0.0,
       1.0,
     );
-    final double brightness = clampDouble(
+    final double brightness = MiscTools.clampDouble(
       a.brightness + (b.brightness - a.brightness) * t,
       0.0,
       1.0,

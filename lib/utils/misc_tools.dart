@@ -117,6 +117,16 @@ class MiscTools {
     return Random().nextInt((max + 1) - min) + min;
   }
 
+  static double clampDouble(double value, double min, double max) {
+    if (value < min) {
+      return min;
+    } else if (value > max) {
+      return max;
+    } else {
+      return value;
+    }
+  }
+
   /// Whether or not the current environment is a web environment.
   static bool get isWeb => bool.hasEnvironment('dart.library.html');
 }

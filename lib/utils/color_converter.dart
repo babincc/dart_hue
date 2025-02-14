@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'dart:ui';
 
+import 'package:color/color.dart';
 import 'package:dart_hue/domain/models/entertainment_configuration/entertainment_stream/entertainment_stream_color.dart';
 
 /// A class for converting between color spaces.
@@ -111,7 +111,7 @@ class ColorConverter {
         'y must be greater than or equal to 0 and less than or equal to 1');
 
     final List<int> rgb = xy2rgb(x, y);
-    return Color.fromARGB(255, rgb[0], rgb[1], rgb[2]);
+    return Color.rgb(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Converts xy coordinates in the CIE 1931 color space to an integer.
@@ -241,7 +241,7 @@ class ColorConverter {
 
   /// Converts RGB values to a Dart Color object.
   static Color rgb2color(int r, int g, int b) {
-    return Color.fromRGBO(r, g, b, 1.0);
+    return Color.rgb(r, g, b);
   }
 
   /// Converts RGB values to an integer.
@@ -519,14 +519,16 @@ class ColorConverter {
   ///
   /// Returns a list of doubles representing the xy values. [x, y, brightness]
   static List<double> color2xy(Color color) {
-    return rgb2xy(color.red, color.green, color.blue);
+    final RgbColor rgb = color.toRgbColor();
+    return rgb2xy(rgb.r.toInt(), rgb.g.toInt(), rgb.b.toInt());
   }
 
   /// Converts a Dart Color object to RGB values.
   ///
   /// Returns a list of integers representing the RGB values. [r, g, b]
   static List<int> color2rgb(Color color) {
-    return [color.red, color.green, color.blue];
+    final RgbColor rgb = color.toRgbColor();
+    return [rgb.r.toInt(), rgb.g.toInt(), rgb.b.toInt()];
   }
 
   /// Converts a Dart Color object to HSV values.
@@ -541,7 +543,8 @@ class ColorConverter {
   ///
   /// Returns a string representing the hex value. ffffffff
   static String color2hex(Color color) {
-    return rgb2hex(color.red, color.green, color.blue);
+    final RgbColor rgb = color.toRgbColor();
+    return rgb2hex(rgb.r.toInt(), rgb.g.toInt(), rgb.b.toInt());
   }
 
   /// Converts a Dart Color object to HSL values.
@@ -554,7 +557,8 @@ class ColorConverter {
 
   /// Converts a Dart Color object to an integer.
   static int color2int(Color color) {
-    return color.value;
+    final RgbColor rgb = color.toRgbColor();
+    return rgb2int(rgb.r.toInt(), rgb.g.toInt(), rgb.b.toInt());
   }
 
   /// Converts an integer to xy coordinates in the CIE 1931 color space.
@@ -603,7 +607,8 @@ class ColorConverter {
 
   /// Converts an integer to a Dart Color object.
   static Color int2color(int integer) {
-    return Color(integer);
+    final List<int> rgb = int2rgb(integer);
+    return Color.rgb(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Makes colors appear more natural on a screen.

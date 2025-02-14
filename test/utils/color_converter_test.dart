@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:color/color.dart';
 import 'package:dart_hue/dart_hue.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -139,27 +138,27 @@ void main() {
         () {
           expect(
             ColorConverter.xy2color(xy1[0], xy1[1]),
-            const Color(0xff0040ff),
+            Color.hex('0xff0040ff'),
           );
           expect(
             ColorConverter.xy2color(xy2[0], xy2[1]),
-            const Color(0xffffde00),
+            Color.hex('0xffffde00'),
           );
           expect(
             ColorConverter.xy2color(xy3[0], xy3[1]),
-            const Color(0xffffca00),
+            Color.hex('0xffffca00'),
           );
           expect(
             ColorConverter.xy2color(xy4[0], xy4[1]),
-            const Color(0xff00ff00),
+            Color.hex('0xff00ff00'),
           );
           expect(
             ColorConverter.xy2color(xy5[0], xy5[1]),
-            const Color(0xffff003c),
+            Color.hex('0xffff003c'),
           );
           expect(
             ColorConverter.xy2color(xy6[0], xy6[1]),
-            const Color(0xff76ff84),
+            Color.hex('0xff76ff84'),
           );
         },
       );
@@ -356,31 +355,31 @@ void main() {
         () {
           expect(
             ColorConverter.rgb2color(rgb1[0], rgb1[1], rgb1[2]),
-            const Color(0xffff0000),
+            Color.hex('0xffff0000'),
           );
           expect(
             ColorConverter.rgb2color(rgb2[0], rgb2[1], rgb2[2]),
-            const Color(0xff00ff00),
+            Color.hex('0xff00ff00'),
           );
           expect(
             ColorConverter.rgb2color(rgb3[0], rgb3[1], rgb3[2]),
-            const Color(0xff0000ff),
+            Color.hex('0xff0000ff'),
           );
           expect(
             ColorConverter.rgb2color(rgb4[0], rgb4[1], rgb4[2]),
-            const Color(0xff808080),
+            Color.hex('0xff808080'),
           );
           expect(
             ColorConverter.rgb2color(rgb5[0], rgb5[1], rgb5[2]),
-            const Color(0xff000000),
+            Color.hex('0xff000000'),
           );
           expect(
             ColorConverter.rgb2color(rgb6[0], rgb6[1], rgb6[2]),
-            const Color(0xffffffff),
+            Color.hex('0xffffffff'),
           );
           expect(
             ColorConverter.rgb2color(rgb7[0], rgb7[1], rgb7[2]),
-            const Color(0xff8a4888),
+            Color.hex('0xff8a4888'),
           );
         },
       );
@@ -577,31 +576,31 @@ void main() {
         () {
           expect(
             ColorConverter.hsv2color(hsv1[0].toInt(), hsv1[1], hsv1[2]),
-            const Color(0xffff0000),
+            Color.hex('0xffff0000'),
           );
           expect(
             ColorConverter.hsv2color(hsv2[0].toInt(), hsv2[1], hsv2[2]),
-            const Color(0xff00ff00),
+            Color.hex('0xff00ff00'),
           );
           expect(
             ColorConverter.hsv2color(hsv3[0].toInt(), hsv3[1], hsv3[2]),
-            const Color(0xff0000ff),
+            Color.hex('0xff0000ff'),
           );
           expect(
             ColorConverter.hsv2color(hsv4[0].toInt(), hsv4[1], hsv4[2]),
-            const Color(0xff808080),
+            Color.hex('0xff808080'),
           );
           expect(
             ColorConverter.hsv2color(hsv5[0].toInt(), hsv5[1], hsv5[2]),
-            const Color(0xff000000),
+            Color.hex('0xff000000'),
           );
           expect(
             ColorConverter.hsv2color(hsv6[0].toInt(), hsv6[1], hsv6[2]),
-            const Color(0xffffffff),
+            Color.hex('0xffffffff'),
           );
           expect(
             ColorConverter.hsv2color(hsv7[0].toInt(), hsv7[1], hsv7[2]),
-            const Color(0xff8a4888),
+            Color.hex('0xff8a4888'),
           );
         },
       );
@@ -794,31 +793,31 @@ void main() {
         () {
           expect(
             ColorConverter.hex2color(hex1),
-            const Color(0xffff0000),
+            Color.hex('0xffff0000'),
           );
           expect(
             ColorConverter.hex2color(hex2),
-            const Color(0xff00ff00),
+            Color.hex('0xff00ff00'),
           );
           expect(
             ColorConverter.hex2color(hex3),
-            const Color(0xff0000ff),
+            Color.hex('0xff0000ff'),
           );
           expect(
             ColorConverter.hex2color(hex4),
-            const Color(0xff808080),
+            Color.hex('0xff808080'),
           );
           expect(
             ColorConverter.hex2color(hex5),
-            const Color(0xff000000),
+            Color.hex('0xff000000'),
           );
           expect(
             ColorConverter.hex2color(hex6),
-            const Color(0xffffffff),
+            Color.hex('0xffffffff'),
           );
           expect(
             ColorConverter.hex2color(hex7),
-            const Color(0xff8a4888),
+            Color.hex('0xff8a4888'),
           );
         },
       );
@@ -1011,31 +1010,31 @@ void main() {
         () {
           expect(
             ColorConverter.hsl2color(hsl1[0].toInt(), hsl1[1], hsl1[2]),
-            const Color(0xffff0000),
+            Color.hex('0xffff0000'),
           );
           expect(
             ColorConverter.hsl2color(hsl2[0].toInt(), hsl2[1], hsl2[2]),
-            const Color(0xff00ff00),
+            Color.hex('0xff00ff00'),
           );
           expect(
             ColorConverter.hsl2color(hsl3[0].toInt(), hsl3[1], hsl3[2]),
-            const Color(0xff0000ff),
+            Color.hex('0xff0000ff'),
           );
           expect(
             ColorConverter.hsl2color(hsl4[0].toInt(), hsl4[1], hsl4[2]),
-            const Color(0xff808080),
+            Color.hex('0xff808080'),
           );
           expect(
             ColorConverter.hsl2color(hsl5[0].toInt(), hsl5[1], hsl5[2]),
-            const Color(0xff000000),
+            Color.hex('0xff000000'),
           );
           expect(
             ColorConverter.hsl2color(hsl6[0].toInt(), hsl6[1], hsl6[2]),
-            const Color(0xffffffff),
+            Color.hex('0xffffffff'),
           );
           expect(
             ColorConverter.hsl2color(hsl7[0].toInt(), hsl7[1], hsl7[2]),
-            const Color(0xff8a4888),
+            Color.hex('0xff8a4888'),
           );
         },
       );
@@ -1079,13 +1078,13 @@ void main() {
   group(
     'color to',
     () {
-      const Color color1 = Color(0xffff0000);
-      const Color color2 = Color(0xff00ff00);
-      const Color color3 = Color(0xff0000ff);
-      const Color color4 = Color(0xff808080);
-      const Color color5 = Color(0xff000000);
-      const Color color6 = Color(0xffffffff);
-      const Color color7 = Color(0xff8a4888);
+      Color color1 = Color.hex('0xffff0000');
+      Color color2 = Color.hex('0xff00ff00');
+      Color color3 = Color.hex('0xff0000ff');
+      Color color4 = Color.hex('0xff808080');
+      Color color5 = Color.hex('0xff000000');
+      Color color6 = Color.hex('0xffffffff');
+      Color color7 = Color.hex('0xff8a4888');
 
       test(
         'xy',
@@ -1688,31 +1687,31 @@ void main() {
         () {
           expect(
             ColorConverter.int2color(int1),
-            const Color(0xffff0000),
+            Color.hex('0xffff0000'),
           );
           expect(
             ColorConverter.int2color(int2),
-            const Color(0xff00ff00),
+            Color.hex('0xff00ff00'),
           );
           expect(
             ColorConverter.int2color(int3),
-            const Color(0xff0000ff),
+            Color.hex('0xff0000ff'),
           );
           expect(
             ColorConverter.int2color(int4),
-            const Color(0xff808080),
+            Color.hex('0xff808080'),
           );
           expect(
             ColorConverter.int2color(int5),
-            const Color(0xff000000),
+            Color.hex('0xff000000'),
           );
           expect(
             ColorConverter.int2color(int6),
-            const Color(0xffffffff),
+            Color.hex('0xffffffff'),
           );
           expect(
             ColorConverter.int2color(int7),
-            const Color(0xff8a4888),
+            Color.hex('0xff8a4888'),
           );
         },
       );
