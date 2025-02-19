@@ -18,9 +18,17 @@ class BridgeDiscoveryRepo {
   /// Returns a list of [DiscoveredBridge] objects. These contain the IP address
   /// of the bridge and a partial ID of the bridge.
   ///
+  /// `method` The method used to discover bridges. The default is `endpoint`.
+  /// The mDNS method has some bugs on iOS. The endpoint method might not work
+  /// immediately after starting a new bridge, or plugging in an old one. The
+  /// bridge needs to be connected to the network for a few minutes before it
+  /// can be discovered using the endpoint method. This is an edge case, and
+  /// endpoint is still the recommended method.
+  ///
   /// If `savedBridges` is provided, the bridges that are already saved to the
   /// device will be removed from the search results.
   static Future<List<DiscoveredBridge>> discoverBridges({
+    BridgeDiscoveryMethod method = BridgeDiscoveryMethod.endpoint,
     List<Bridge> savedBridges = const [],
   }) async {
     /// Bridges found using MDNS.
@@ -29,12 +37,23 @@ class BridgeDiscoveryRepo {
       // mDNS does not work on web.
       bridgesFromMdns = [];
     } else {
-      bridgesFromMdns = await BridgeDiscoveryService.discoverBridgesMdns();
+      if (identical(method, BridgeDiscoveryMethod.mdns) ||
+          identical(method, BridgeDiscoveryMethod.both)) {
+        bridgesFromMdns = await BridgeDiscoveryService.discoverBridgesMdns();
+      } else {
+        bridgesFromMdns = [];
+      }
     }
 
     /// Bridges found using the endpoint method.
-    List<DiscoveredBridge> bridgesFromEndpoint =
-        await BridgeDiscoveryService.discoverBridgesEndpoint();
+    List<DiscoveredBridge> bridgesFromEndpoint;
+    if (identical(method, BridgeDiscoveryMethod.endpoint) ||
+        identical(method, BridgeDiscoveryMethod.both)) {
+      bridgesFromEndpoint =
+          await BridgeDiscoveryService.discoverBridgesEndpoint();
+    } else {
+      bridgesFromEndpoint = [];
+    }
 
     // Remove duplicates from the two search methods.
     Set<DiscoveredBridge> uniqueValues = {};
@@ -260,4 +279,16 @@ class DiscoveryTimeoutController {
 
   /// `true` if the bridge discovery process needs to be canceled.
   bool cancelDiscovery = false;
+}
+
+/// The method used to discover bridges.
+enum BridgeDiscoveryMethod {
+  /// Searches the network for bridges using the mDNS method.
+  mdns,
+
+  /// Searches the network for bridges using the endpoint method.
+  endpoint,
+
+  /// Searches the network for bridges using both the mDNS and endpoint methods.
+  both;
 }

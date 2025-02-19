@@ -1,3 +1,7 @@
+## 2.0.0-beta.20 - February 19, 2025
+
+- Added the option to choose discovery method when discovering bridges
+
 ## 2.0.0-beta.19 - February 14, 2025
 
 - Removed Flutter based dev_dependencies
