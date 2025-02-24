@@ -53,7 +53,7 @@ In the `pubspec.yaml` of your dart project, add the following dependency:
 
 ```yaml
 dependencies:
-  dart_hue: ^2.1.0
+  dart_hue: ^2.1.1
 ```
 
 Import it to each file you use it in:
@@ -68,7 +68,7 @@ import 'package:dart_hue/dart_hue.dart';
 
 Without doing this, your app will only be able to communicate with Philips Hue bridges that are on the same network as the user's device. This section will show you how to establish a remote connection with a bridge; that way, it can be controlled from anywhere in the world.
 
-Due to the length of these instructions, they have been placed in their own document, [here](https://github.com/babincc/dart_hue/blob/master/remote_connection_instructions.md).
+Due to the length of these instructions, they have been placed in their own document, <a href="https://github.com/babincc/dart_hue/blob/master/remote_connection_instructions.md" target="_blank">here</a>.
 
 Once you have completed the steps in the above document, you will be able to communicate with a bridge remotely using the same steps as all of the examples below.
 
@@ -170,6 +170,8 @@ myColor.toInt(); // 4287252616
 ### Example 7 - Entertainment Streaming
 
 This example shows how to use Entertainment Streaming. It's important to note, you will need to use the official Philips Hue app to create entertainment areas before you can use Dart Hue to interact with them. At the time of writing this, Philips does not give third party apps the ability to create entertainment areas.
+
+<a href="https://drive.google.com/file/d/1vGiLQWDAegpOBXABdDD2IRx4XFSnZdjP/view?usp=sharing" target="_blank">Here is a video demonstration</a> of what can be done with entertainment streaming. In the example code, there is a _Back In Black_ section—this video shows that code in action (with the drums duplicated to two lights instead of just one).
 
 ```dart
 // Get one of your stream areas that you made in the official Hue app.

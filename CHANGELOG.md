@@ -1,3 +1,7 @@
+## 2.1.1 - February 23, 2025
+
+- Minor code change and update to docs
+
 ## 2.1.0 - February 23, 2025
 
 - Moved over to normalized RGB (0.0-1.0) values instead of the old 0-255.
