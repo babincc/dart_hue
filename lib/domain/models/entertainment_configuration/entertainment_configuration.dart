@@ -277,7 +277,7 @@ class EntertainmentConfiguration extends Resource {
     Bridge bridge, {
     String? token,
   }) async =>
-      _entertainmentStream.stopStreaming(
+      await _entertainmentStream.stopStreaming(
         bridge,
         token: token,
       );
