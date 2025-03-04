@@ -53,7 +53,7 @@ In the `pubspec.yaml` of your dart project, add the following dependency:
 
 ```yaml
 dependencies:
-  dart_hue: ^2.2.2
+  dart_hue: ^2.2.3
 ```
 
 Import it to each file you use it in:
