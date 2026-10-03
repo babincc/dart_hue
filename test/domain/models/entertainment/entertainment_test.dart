@@ -45,6 +45,10 @@ void main() {
       ApiFields.rid: '1a2b3c4d-5e6f-7a8b-9c0d-ef1a2b3c4d5e',
     },
     ApiFields.isRenderer: false,
+    ApiFields.rendererReference: {
+      ApiFields.rType: ResourceType.light.value,
+      ApiFields.rid: 'a12b3c4d-5e6f-7a8b-9c0d-ef1a2b3c4d5e',
+    },
     ApiFields.isProxy: false,
     ApiFields.isEqualizer: false,
     ApiFields.maxStreams: 2,

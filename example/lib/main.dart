@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:dart_hue/dart_hue.dart';
 import 'package:example/stream_demos/stream_demos_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide RadioGroup;
 import 'package:radio_group_v2/radio_group_v2.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,10 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomePage(
-        clientId: clientId,
-        clientSecret: clientSecret,
-      ),
+      home: HomePage(clientId: clientId, clientSecret: clientSecret),
     );
   }
 }
@@ -84,50 +81,51 @@ class _HomePageState extends State<HomePage> {
   /// Watches for deep links.
   late final StreamSubscription deepLinkStream;
 
+  /// Custom method to encrypt the remote token state.
+  String Function(String)? stateEncrypter = (plaintext) =>
+      'abcd${plaintext}1234';
+
+  /// Custom method to decrypt the remote token state.
+  String Function(String)? stateDecrypter = (ciphertext) =>
+      ciphertext.substring(4, ciphertext.length - 4);
+
   @override
   void initState() {
     super.initState();
 
-    deepLinkStream = AppLinks().uriLinkStream.listen(
-      (Uri? uri) {
-        if (uri == null) return;
+    deepLinkStream = AppLinks().uriLinkStream.listen((Uri? uri) {
+      if (uri == null) return;
 
-        final int start = uri.toString().indexOf('?');
-        String queryParams = uri.toString().substring(start);
-        Uri truncatedUri = Uri.parse(queryParams);
+      try {
+        final String? pkce = uri.queryParameters[ApiFields.pkce];
+        final String? code = uri.queryParameters[ApiFields.code];
+        final String? resState = uri.queryParameters[ApiFields.state];
 
-        try {
-          final String? pkce = truncatedUri.queryParameters[ApiFields.pkce];
-          final String? code = truncatedUri.queryParameters[ApiFields.code];
-          final String? resState =
-              truncatedUri.queryParameters[ApiFields.state];
-
-          // Handle Dart Hue deep link
-          if (pkce != null && code != null && resState != null) {
-            // ignore: unused_local_variable
-            String stateSecret;
-            if (resState.contains('-')) {
-              stateSecret = resState.substring(0, resState.indexOf('-'));
-            } else {
-              stateSecret = resState;
-            }
-
-            // TODO: Before continuing, you should compare the stateSecret above
-            //  to the one given by [BridgeDiscoveryRepo.remoteAuthRequest]. If
-            //  they are not the same, do not proceed.
-
-            TokenRepo.fetchRemoteToken(
-              clientId: widget.clientId,
-              clientSecret: widget.clientSecret,
-              pkce: pkce,
-              code: code,
-            );
+        // Handle Dart Hue deep link
+        if (pkce != null && code != null && resState != null) {
+          // ignore: unused_local_variable
+          String stateSecret;
+          if (resState.contains('-')) {
+            stateSecret = resState.substring(0, resState.indexOf('-'));
+          } else {
+            stateSecret = resState;
           }
-        } catch (_) {
-          // Do nothing
+
+          // TODO: Before continuing, you should compare the stateSecret above
+          //  to the one given by [BridgeDiscoveryRepo.remoteAuthRequest]. If
+          //  they are not the same, do not proceed.
+
+          TokenRepo.fetchRemoteToken(
+            clientId: widget.clientId,
+            clientSecret: widget.clientSecret,
+            pkce: pkce,
+            code: code,
+          );
         }
-      },
-    );
+      } catch (_) {
+        // Do nothing
+      }
+    });
   }
 
   @override
@@ -151,10 +149,7 @@ class _HomePageState extends State<HomePage> {
                 const Padding(
                   padding: EdgeInsets.only(right: padding),
                   child: Row(
-                    children: [
-                      Text('Loading... '),
-                      Icon(Icons.query_builder),
-                    ],
+                    children: [Text('Loading... '), Icon(Icons.query_builder)],
                   ),
                 ),
               ]
@@ -176,8 +171,10 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Previously connected bridge'
-                          '${oldBridges.length == 1 ? '' : 's'}'),
+                      Text(
+                        'Previously connected bridge'
+                        '${oldBridges.length == 1 ? '' : 's'}',
+                      ),
                       RadioGroup(
                         controller: oldBridgeGroupController,
                         values: oldBridges,
@@ -211,15 +208,17 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Found ${bridgeIps.length} bridge IP'
-                          '${bridgeIps.length == 1 ? '' : 's'}'),
+                      Text(
+                        'Found ${bridgeIps.length} bridge IP'
+                        '${bridgeIps.length == 1 ? '' : 's'}',
+                      ),
                       RadioGroup(
                         controller: ipGroupController,
                         values: bridgeIps,
                         indexOfDefault:
                             (bridgeIps.isEmpty || oldBridges.isNotEmpty)
-                                ? -1
-                                : 0,
+                            ? -1
+                            : 0,
                         orientation: RadioGroupOrientation.horizontal,
                         onChanged: (value) {
                           setState(() {
@@ -242,7 +241,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: ((ipGroupController.myRadioGroupKey == null ||
+                    onPressed:
+                        ((ipGroupController.myRadioGroupKey == null ||
                                     ipGroupController.value == null) &&
                                 (oldBridgeGroupController.myRadioGroupKey !=
                                         null &&
@@ -339,22 +339,25 @@ class _HomePageState extends State<HomePage> {
 
                     // GREEN
                     ElevatedButton(
-                      onPressed:
-                          light == null ? null : () => colorLight('green'),
+                      onPressed: light == null
+                          ? null
+                          : () => colorLight('green'),
                       child: const Text('Green'),
                     ),
 
                     // BLUE
                     ElevatedButton(
-                      onPressed:
-                          light == null ? null : () => colorLight('blue'),
+                      onPressed: light == null
+                          ? null
+                          : () => colorLight('blue'),
                       child: const Text('Blue'),
                     ),
 
                     // WHITE
                     ElevatedButton(
-                      onPressed:
-                          light == null ? null : () => colorLight('white'),
+                      onPressed: light == null
+                          ? null
+                          : () => colorLight('white'),
                       child: const Text('White'),
                     ),
                   ],
@@ -374,7 +377,8 @@ class _HomePageState extends State<HomePage> {
                               builder: (_) {
                                 return StreamDemosScreen(
                                   entertainmentConfiguration: hueNetwork!
-                                      .entertainmentConfigurations.first,
+                                      .entertainmentConfigurations
+                                      .first,
                                 );
                               },
                             ),
@@ -398,22 +402,25 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     // STREAM 1
                     ElevatedButton(
-                      onPressed:
-                          hueNetwork == null ? null : () => startStreaming(1),
+                      onPressed: hueNetwork == null
+                          ? null
+                          : () => startStreaming(1),
                       child: const Text('Stream 1'),
                     ),
 
                     // STREAM 2
                     ElevatedButton(
-                      onPressed:
-                          hueNetwork == null ? null : () => startStreaming(2),
+                      onPressed: hueNetwork == null
+                          ? null
+                          : () => startStreaming(2),
                       child: const Text('Stream 2'),
                     ),
 
                     // STREAM 3
                     ElevatedButton(
-                      onPressed:
-                          hueNetwork == null ? null : () => startStreaming(3),
+                      onPressed: hueNetwork == null
+                          ? null
+                          : () => startStreaming(3),
                       child: const Text('Stream 3'),
                     ),
                   ],
@@ -424,8 +431,9 @@ class _HomePageState extends State<HomePage> {
 
               // STOP STREAMING
               ElevatedButton(
-                onPressed:
-                    (hueNetwork == null || !isStreaming) ? null : stopStreaming,
+                onPressed: (hueNetwork == null || !isStreaming)
+                    ? null
+                    : stopStreaming,
                 child: const Text('Stop Streaming'),
               ),
 
@@ -472,9 +480,7 @@ class _HomePageState extends State<HomePage> {
         return AlertDialog(
           title: const Text('Bridge IP'),
           content: SingleChildScrollView(
-            child: ListBody(
-              children: bridgeIps.map((ip) => Text(ip)).toList(),
-            ),
+            child: ListBody(children: bridgeIps.map((ip) => Text(ip)).toList()),
           ),
           actions: [
             TextButton(
@@ -555,10 +561,10 @@ class _HomePageState extends State<HomePage> {
 
     final Map<String, String> data =
         await BridgeDiscoveryRepo.remoteAuthRequest(
-      clientId: widget.clientId,
-      redirectUri: 'darthue://auth',
-      deviceName: 'TestDevice',
-    );
+          clientId: widget.clientId,
+          redirectUri: 'darthue://auth',
+          deviceName: 'TestDevice',
+        );
 
     if (data.isEmpty || data['url'] == null || data['state'] == null) {
       // ignore: avoid_print
@@ -568,10 +574,7 @@ class _HomePageState extends State<HomePage> {
 
       if (!await canLaunchUrl(uri)) return;
 
-      await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
 
     setState(() {
@@ -612,8 +615,9 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
 
-    final List<Map<String, dynamic>>? res =
-        await bridge!.getResource(ResourceType.bridge);
+    final List<Map<String, dynamic>>? res = await bridge!.getResource(
+      ResourceType.bridge,
+    );
 
     try {
       // ignore: unused_local_variable
@@ -638,8 +642,9 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
 
-    final Map<String, dynamic>? res =
-        (await bridge!.getResource(ResourceType.light))?.first;
+    final Map<String, dynamic>? res = (await bridge!.getResource(
+      ResourceType.light,
+    ))?.first;
 
     // ignore: unused_local_variable
     Light light = Light.fromJson(res ?? {});
@@ -715,8 +720,11 @@ class _HomePageState extends State<HomePage> {
       y = 0.3127;
     }
 
-    light = light!
-        .copyWith(color: light!.color.copyWith(xy: LightColorXy(x: x, y: y)));
+    light = light!.copyWith(
+      color: light!.color.copyWith(
+        xy: LightColorXy(x: x, y: y),
+      ),
+    );
 
     await bridge!.put(light!);
 
@@ -745,7 +753,8 @@ class _HomePageState extends State<HomePage> {
     try {
       if (!isStreaming) {
         final bool didStart = await hueNetwork!
-            .entertainmentConfigurations.first
+            .entertainmentConfigurations
+            .first
             .startStreaming(bridge!);
 
         if (!didStart) throw 'Failed to start stream';
@@ -814,9 +823,10 @@ class _HomePageState extends State<HomePage> {
       // same command isn't added to the queue multiple times. If the
       // same command is added multiple times, the bridge will only
       // execute the command once.
-      hueNetwork!.entertainmentConfigurations.first.addAllToStreamQueue(
-        [command1.copy(), command2.copy()],
-      );
+      hueNetwork!.entertainmentConfigurations.first.addAllToStreamQueue([
+        command1.copy(),
+        command2.copy(),
+      ]);
     }
   }
 
@@ -869,9 +879,10 @@ class _HomePageState extends State<HomePage> {
       // same command isn't added to the queue multiple times. If the
       // same command is added multiple times, the bridge will only
       // execute the command once.
-      hueNetwork!.entertainmentConfigurations.first.addAllToStreamQueue(
-        [command1.copy(), command2.copy()],
-      );
+      hueNetwork!.entertainmentConfigurations.first.addAllToStreamQueue([
+        command1.copy(),
+        command2.copy(),
+      ]);
     }
   }
 
@@ -896,31 +907,26 @@ class _HomePageState extends State<HomePage> {
     final ColorXy off = ColorXy.fromRgbNormalized(0.0, 0.0, 0.0, 0.0);
 
     // Continuously alternate between white and off for 500ms each.
-    Timer.periodic(
-      const Duration(milliseconds: 500),
-      (timer) {
-        // Turn the timer off when the user stops the stream.
-        if (!_isStreamingPattern3) {
-          timer.cancel();
-          return;
-        }
+    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      // Turn the timer off when the user stops the stream.
+      if (!_isStreamingPattern3) {
+        timer.cancel();
+        return;
+      }
 
-        hueNetwork!.entertainmentConfigurations.first.addAllToStreamQueue(
-          [
-            EntertainmentStreamCommand(
-              channel: 0,
-              color: (timer.tick - 1) % 2 == 0 ? white : off,
-              waitAfterAnimation: const Duration(milliseconds: 500),
-            ),
-            EntertainmentStreamCommand(
-              channel: 1,
-              color: (timer.tick - 1) % 2 == 0 ? off : white,
-              waitAfterAnimation: const Duration(milliseconds: 500),
-            ),
-          ],
-        );
-      },
-    );
+      hueNetwork!.entertainmentConfigurations.first.addAllToStreamQueue([
+        EntertainmentStreamCommand(
+          channel: 0,
+          color: (timer.tick - 1) % 2 == 0 ? white : off,
+          waitAfterAnimation: const Duration(milliseconds: 500),
+        ),
+        EntertainmentStreamCommand(
+          channel: 1,
+          color: (timer.tick - 1) % 2 == 0 ? off : white,
+          waitAfterAnimation: const Duration(milliseconds: 500),
+        ),
+      ]);
+    });
   }
 
   /// Stops the entertainment streaming process.
@@ -934,13 +940,11 @@ class _HomePageState extends State<HomePage> {
     try {
       await hueNetwork!.entertainmentConfigurations.first
           .stopStreaming(bridge!)
-          .then(
-        (value) {
-          if (value) {
-            isStreaming = false;
-          }
-        },
-      );
+          .then((value) {
+            if (value) {
+              isStreaming = false;
+            }
+          });
     } catch (e) {
       // ignore: avoid_print
       print('Error stopping stream: $e');

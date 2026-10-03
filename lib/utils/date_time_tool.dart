@@ -11,8 +11,8 @@ class DateTimeTool {
   /// Returns a [DateTime] with the date of the original, but time set to
   /// midnight.
   static DateTime dateOnly(DateTime date) {
-    final DateTime now = DateTime.now();
-
-    return DateTime.utc(now.year, now.month, now.day);
+    return date.isUtc
+        ? DateTime.utc(date.year, date.month, date.day)
+        : DateTime(date.year, date.month, date.day);
   }
 }

@@ -14,7 +14,7 @@ class LightTimedEffects {
     required int duration,
     required this.status,
     required this.statusValues,
-  })  : assert(duration >= 0, '`duration` must be greater than 0'),
+  })  : assert(duration >= 0, '`duration` must be greater than or equal to 0'),
         _originalEffect = effect,
         _effect = effect,
         _originalDuration = duration,

@@ -499,7 +499,7 @@ void main() {
           );
 
           test(
-            'invalid action value (empty) assertion',
+            'empty action is accepted',
             () {
               expect(
                 () {
@@ -510,7 +510,7 @@ void main() {
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );

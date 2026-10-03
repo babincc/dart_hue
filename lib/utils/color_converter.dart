@@ -784,7 +784,7 @@ class ColorConverter {
   /// Converts a hex string to xy coordinates in the CIE 1931 color space.
   ///
   /// Returns a list of doubles representing the xy values. [x, y, brightness]
-  static List<double> hex2xy(hex) {
+  static List<double> hex2xy(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return rgb2xy2(rgb[0], rgb[1], rgb[2]);
   }
@@ -793,7 +793,7 @@ class ColorConverter {
   ///
   /// Returns a list of integers representing the RGB values. [r, g, b]
   @Deprecated('Use hex2rgb2 instead')
-  static List<int> hex2rgb(hex) {
+  static List<int> hex2rgb(String hex) {
     final List<double> rgb = hex2rgb2(hex);
 
     return [
@@ -806,7 +806,7 @@ class ColorConverter {
   /// Converts a hex string to normalized RGB (0.0-1.0) values.
   ///
   /// Returns a list of doubles representing the RGB values. [r, g, b]
-  static List<double> hex2rgb2(hex) {
+  static List<double> hex2rgb2(String hex) {
     String hexString = hex.toString().replaceAll('#', '');
     hexString = hexString.replaceAll('0x', '');
 
@@ -829,7 +829,7 @@ class ColorConverter {
   /// Converts a hex string to HSV values.
   ///
   /// Returns a list of doubles representing the HSV values. [h, s, v]
-  static List<double> hex2hsv(hex) {
+  static List<double> hex2hsv(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return rgb2hsv2(rgb[0], rgb[1], rgb[2]);
   }
@@ -837,38 +837,38 @@ class ColorConverter {
   /// Converts a hex string to HSL values.
   ///
   /// Returns a list of doubles representing the HSL values. [h, s, l]
-  static List<double> hex2hsl(hex) {
+  static List<double> hex2hsl(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return rgb2hsl2(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Converts a hex string to a [Color] object.
-  static Color hex2color(hex) {
+  static Color hex2color(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return rgb2color2(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Converts a hex string to an integer.
-  static int hex2int(hex) {
+  static int hex2int(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return rgb2int2(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Converts a hex string to a [ColorXy] object.
-  static ColorXy hex2colorXy(hex) {
+  static ColorXy hex2colorXy(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return ColorXy.fromRgbNormalized(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Converts a hex string to a [ColorRgb] object.
   @Deprecated('Use hex2colorRgbNormalized instead')
-  static ColorRgb hex2colorRgb(hex) {
+  static ColorRgb hex2colorRgb(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return ColorRgb.fromRgbNormalized(rgb[0], rgb[1], rgb[2]);
   }
 
   /// Converts a hex string to a [ColorRgbNormalized] object.
-  static ColorRgbNormalized hex2colorRgbNormalized(hex) {
+  static ColorRgbNormalized hex2colorRgbNormalized(String hex) {
     final List<double> rgb = hex2rgb2(hex);
     return ColorRgbNormalized(rgb[0], rgb[1], rgb[2]);
   }

@@ -38,7 +38,7 @@ class TokenService {
   /// remotely.
   ///
   /// May throw [ExpiredRefreshTokenException] if the refresh token is expired.
-  /// If this happens, get the user to grand access to the app again by using
+  /// If this happens, get the user to grant access to the app again by using
   /// [BridgeDiscoveryRepo.remoteAuthRequest].
   static Future<Map<String, dynamic>?> refreshRemoteToken({
     required String clientId,
@@ -61,15 +61,13 @@ class TokenService {
   /// [refreshRemoteToken].
   ///
   /// May throw [ExpiredRefreshTokenException] if the refresh token is expired.
-  /// If this happens, get the user to grand access to the app again by using
+  /// If this happens, get the user to grant access to the app again by using
   /// [BridgeDiscoveryRepo.remoteAuthRequest].
   static Future<Map<String, dynamic>?> _fetchRemoteToken({
     required String clientId,
     required String clientSecret,
     required Map<String, String> body,
   }) async {
-    final Client client = Client();
-
     const String uri = 'https://api.meethue.com/v2/oauth2/token';
 
     // Generate a single use number.
@@ -96,11 +94,17 @@ class TokenService {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
-    final Response res = await client.post(
-      Uri.parse(uri),
-      headers: headers,
-      body: body,
-    );
+    final Client client = Client();
+    final Response res;
+    try {
+      res = await client.post(
+        Uri.parse(uri),
+        headers: headers,
+        body: body,
+      );
+    } finally {
+      client.close();
+    }
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
       return jsonDecode(res.body);
@@ -108,7 +112,7 @@ class TokenService {
 
     // In the event that the refresh token is expired, throw an exception.
     if (body.containsKey('refresh_token')) {
-      if (res.statusCode == 400 && res.statusCode == 401) {
+      if (res.statusCode == 400 || res.statusCode == 401) {
         throw const ExpiredRefreshTokenException();
       }
     }

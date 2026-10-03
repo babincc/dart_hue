@@ -23,6 +23,7 @@ void main() {
     ApiFields.id: '01234567-89ab-cdef-0123-456789abcdef',
     ApiFields.idV1: '/abcd/1234-abcd',
     ApiFields.applicationKey: null,
+    ApiFields.clientKey: null,
     ApiFields.ipAddress: '192.168.0.1',
     ApiFields.owner: {
       ApiFields.rid: 'ffffffff-ffff-ffff-ffff-ffffffffffff',

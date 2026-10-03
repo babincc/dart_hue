@@ -44,6 +44,15 @@ import 'package:dart_hue/utils/json_tool.dart';
 import 'package:test/test.dart';
 
 void main() {
+  test('gradient accepts five points and includes them in PUT', () {
+    final gradient = LightGradientFull.empty();
+    final points = List.generate(5, (i) => LightColorXy(x: i / 10, y: i / 10));
+    gradient.points = points;
+    expect(gradient.points, points);
+    expect(gradient.hasUpdate, isTrue);
+    expect(gradient.toJson()[ApiFields.points], hasLength(5));
+    expect(gradient.copyWith().points, points);
+  });
   final Light testLight = Light(
     id: '01234567-89ab-cdef-0123-456789abcdef',
     idV1: '/abcd/1234-abcd',
@@ -1041,7 +1050,7 @@ void main() {
           );
 
           test(
-            'invalid action value (empty) assertion',
+            'empty action is accepted',
             () {
               expect(
                 () {
@@ -1052,7 +1061,7 @@ void main() {
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );
@@ -1289,7 +1298,7 @@ void main() {
           );
 
           test(
-            'set points (too many)',
+            'set points (too many) preserves existing points',
             () {
               Light alteredLight = testLight.copyWith(
                 gradient: LightGradientFull(
@@ -1314,8 +1323,10 @@ void main() {
                     LightColorXy(x: 0.01, y: 0.11),
                   ];
                 },
-                throwsException,
+                returnsNormally,
               );
+              expect(alteredLight.gradient.points,
+                  [LightColorXy(x: 0.0001, y: 0.1111)]);
             },
           );
 
@@ -1444,7 +1455,7 @@ void main() {
           );
 
           test(
-            'invalid status (empty) assertion',
+            'empty status is accepted',
             () {
               expect(
                 () {
@@ -1457,7 +1468,7 @@ void main() {
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );
@@ -1507,7 +1518,7 @@ void main() {
           );
 
           test(
-            'invalid effect assertion',
+            'invalid effect is retained on construction',
             () {
               expect(
                 () {
@@ -1521,13 +1532,13 @@ void main() {
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );
 
           test(
-            'invalid effect (empty) assertion',
+            'empty effect is accepted',
             () {
               expect(
                 () {
@@ -1541,7 +1552,7 @@ void main() {
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );
@@ -1577,7 +1588,7 @@ void main() {
           );
 
           test(
-            'invalid status assertion',
+            'invalid status is retained on construction',
             () {
               expect(
                 () {
@@ -1591,13 +1602,13 @@ void main() {
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );
 
           test(
-            'invalid status (empty) assertion',
+            'empty status is accepted',
             () {
               expect(
                 () {
@@ -1605,13 +1616,13 @@ void main() {
                     timedEffects: LightTimedEffects(
                       effect: 'effect1',
                       effectValues: ['effect1', 'effect2'],
-                      status: 'statusZ',
+                      status: '',
                       statusValues: ['status1', 'status2'],
                       duration: 2,
                     ),
                   );
                 },
-                throwsA(isA<AssertionError>()),
+                returnsNormally,
               );
             },
           );

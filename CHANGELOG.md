@@ -1,3 +1,13 @@
+## 3.0.1 - October 3, 2026
+
+- Align version numbering with `flutter_hue`; no breaking Dart API changes from 2.3.0.
+- Migrate the Flutter example to AGP 9.1.0, Gradle 9.3.1, Java 17, and built-in Kotlin (Flutter 3.47+).
+- Fix refresh-token rejection handling for HTTP 400/401 and close OAuth HTTP clients after requests.
+- Fix example deep-link parsing and enable network access in Android release builds.
+- Fix `dateOnly` to use its supplied date and preserve its time zone.
+- Accept exactly five gradient points and refresh stale model test fixtures.
+- Fix the example radio group import collision on current Flutter.
+
 ## 2.3.0 - March 4, 2025
 
 - Added `rendererReference` to the `Entertainment` object

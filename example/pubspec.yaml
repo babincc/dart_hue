@@ -1,9 +1,10 @@
 name: example
 description: Demonstrates how to use the dart_hue package.
 publish_to: "none"
-version: 2.3.0
+version: 3.0.1
 environment:
-  sdk: ^3.3.3
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
 
 dependencies:
   app_links: ^6.3.3
